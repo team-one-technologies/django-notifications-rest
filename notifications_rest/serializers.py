@@ -3,6 +3,7 @@ from rest_framework import serializers
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
+from django.utils.timesince import timesince as timesince_
 
 UserModel = get_user_model()
 
@@ -43,11 +44,12 @@ class NotificationSerializer(ModelSerializer):
     public = serializers.BooleanField()
     deleted = serializers.BooleanField()
     emailed = serializers.BooleanField()
+    timesince = serializers.SerializerMethodField(read_only=True, method_name="get_timesince")
 
     class Meta:
         model = Notification
         fields = ['id', 'recipient', 'actor', 'target', 'verb', 'level', 'description', 'unread', 'public', 'deleted',
-                  'emailed', 'timestamp']
+                  'emailed', 'timestamp','timesince']
 
     def create(self, validated_data):
         recipient_data = validated_data.pop('recipient')
