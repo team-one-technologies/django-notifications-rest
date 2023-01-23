@@ -45,6 +45,9 @@ class NotificationSerializer(ModelSerializer):
     deleted = serializers.BooleanField()
     emailed = serializers.BooleanField()
     timesince = serializers.SerializerMethodField(read_only=True, method_name="get_timesince")
+    
+    def get_timesince(self, obj):
+        return timesince_(obj.timestamp, None)
 
     class Meta:
         model = Notification
