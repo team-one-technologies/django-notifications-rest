@@ -12,7 +12,7 @@ class UnreadNotificationsList(ViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = Notification.objects.filter(recipient_id=request.user.id, unread=True)
-        return Response(NotificationSerializer(queryset, many=True).data)
+        return Response(NotificationSerializer(queryset, many=True, context={"request": request}).data)
 
 
 class MarkAllAsRead(APIView):
@@ -69,7 +69,7 @@ class AllNotification(ViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = Notification.objects.filter(recipient_id=request.user.id)
-        return Response(NotificationSerializer(queryset, many=True).data)
+        return Response(NotificationSerializer(queryset, many=True, context={"request": request}).data)
 
 
 class UnreadNotificationCount(APIView):
